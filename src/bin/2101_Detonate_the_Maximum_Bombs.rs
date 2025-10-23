@@ -47,22 +47,23 @@ impl Solution {
         let mut max_size = 0;
         loop {
             if let Some(starting_node_i) = starting_candidates.pop_any() {
-                let size_before = starting_candidates.len() + 1;
-                let mut not_yet_visited: HashSet<_> = starting_candidates.clone();
+                let mut not_yet_visited: HashSet<_> = (0..bombs.len()).collect();
+                let size_before = not_yet_visited.len();
+                not_yet_visited.remove(&starting_node_i);
                 let mut frontier = vec![starting_node_i];
                 while let Some(next_node_i) = frontier.pop() {
                     let next_node = bombs.get(next_node_i).unwrap();
                     not_yet_visited
                         .extract_if(|&node_i| {
                             let node = bombs.get(node_i).unwrap();
-                            next_node.reaches(node) || node.reaches(next_node)
+                            next_node.reaches(node)
                         })
                         .for_each(|x| {
                             frontier.push(x);
                             starting_candidates.remove(&x);
                         });
                 }
-                let size = size_before - starting_candidates.len();
+                let size = size_before - not_yet_visited.len();
                 if size > max_size {
                     max_size = size;
                 }
