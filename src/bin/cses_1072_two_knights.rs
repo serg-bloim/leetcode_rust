@@ -76,7 +76,7 @@ fn test4() {
 }
 #[test]
 fn test_5() {
-    assert_eq!(calc_knight_combos(10_000), 252);
+    assert_eq!(calc_knight_combos(10_000), 4999999550119992);
 }
 
 pub struct Parser<R: BufRead> {
